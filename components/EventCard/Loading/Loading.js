@@ -15,8 +15,12 @@ const Card = styled.div`
 	width: 25vw;
 	border: 1px #ddd solid;
 	border-radius: 4px;
+	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 	padding: 16px;
 	margin: 16px;
+	@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+		width: 90vw;
+	}
 `
 const Title = styled.h2`
 	user-select: none;
@@ -69,6 +73,14 @@ export default function LoadingEventCard() {
 			<div />
 			<Detail>
 				{s.repeat(2).slice(0, s.length + s.length / 3)}
+			</Detail>
+			<div />
+			<Detail>
+				{s.repeat(2).slice(0, s.length + s.length / 2)}
+			</Detail>
+			<div />
+			<Detail>
+				{s.repeat(2).slice(0, s.length + s.length / 2)}
 			</Detail>
 		</Card>
 	)

@@ -8,6 +8,7 @@ const Wrapper = styled.div`
 	border-bottom: 1px #ddd solid;
 	background: white;
 	align-items: center;
+	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 `
 const Title = styled.h3`
 	color: #ed174c;
@@ -33,9 +34,9 @@ export default function NavBar({ activePage }) {
 		<Wrapper>
 			<Img src="https://rtfm.lolacloud.com/download/attachments/3055373/lola-tech-standard.png?api=v2" />
 			<Menu>
-				<MenuItem>
-					<Link href="/">My events</Link>
-				</MenuItem>
+				<Link href="/">
+					<MenuItem>My events</MenuItem>
+				</Link>
 				<MenuItem>Find events</MenuItem>
 			</Menu>
 		</Wrapper>

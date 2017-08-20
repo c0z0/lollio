@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
-export default styled.button`
+import Loading from './Loading'
+
+const Button = styled.button`
 	outline: none !important;
 	border: 2px #ed174c solid;
 	color: white;
@@ -14,4 +16,10 @@ export default styled.button`
 	// 	box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, .1);
 	// }
 	${props => props.secondary && `color: #ed174c; background: white;`};
+	${props =>
+		props.disabled && 'cursor: default; background: #ddd; border-color: #ddd;'};
 `
+
+Button.Loading = Loading
+
+export default Button

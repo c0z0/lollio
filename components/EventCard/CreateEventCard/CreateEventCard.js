@@ -12,19 +12,23 @@ const Card = styled.div`
 	justify-content: center;
 	cursor: pointer;
 	user-select: none;
+	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 	flex-direction: column;
 	color: #ddd;
 	transition: .2s all;
 	&:hover {
 		color: #ed174c !important;
 	}
+	@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+		width: 90vw;
+	}
 `
 
 const Icon = styled.div`font-size: 6em;`
 
-export default function CreateEventCard() {
+export default function CreateEventCard(props) {
 	return (
-		<Card>
+		<Card {...props}>
 			<Icon>+</Icon>
 			<p>Create an event</p>
 		</Card>

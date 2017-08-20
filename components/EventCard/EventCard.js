@@ -9,10 +9,21 @@ import CreateEventCard from './CreateEventCard'
 
 const Card = styled.div`
 	background: white;
+	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 	width: 25vw;
 	border: 1px #ddd solid;
 	border-radius: 4px;
 	margin: 16px;
+	& h2 span.edit {
+		opacity: 0;
+	}
+	&:hover h2 span.edit {
+		opacity: 1;
+	}
+	${props => props.optimistic && `opacity: .5;`};
+	@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+		width: 90vw;
+	}
 `
 
 const Details = styled.div`
@@ -44,11 +55,24 @@ const Bold = styled.span`
 const Title = styled.h2`
 	color: #ed174c;
 	padding: 16px;
-	padding-left: 24px;
 	padding-bottom: 0px;
+	${props => props.optimistic && `color: #ccc !important;`};
+`
+const Edit = styled.span`
+	color: #ccc;
+	transition: all .2s;
+	cursor: pointer;
+	margin-left: 8px;
+
+	&:hover {
+		color: #ed174c;
+	}
 `
 
-const Detail = styled.p`color: #484848;`
+const Detail = styled.p`
+	color: #484848;
+	${props => props.pink && 'color: #ed174c;'};
+`
 
 export default class EventCard extends Component {
 	static propTypes = {
@@ -75,8 +99,40 @@ export default class EventCard extends Component {
 			time,
 			details,
 			registeredUsers,
-			isPrivate
+			private: isPrivate,
+			managingUser,
+			manager,
+			id
 		} = this.props
+		if (id === 'optimistic')
+			return (
+				<Card optimistic>
+					<Title optimistic>
+						{title}
+					</Title>
+					<Details>
+						<Detail>
+							<span className="lnr lnr-clock" />
+							{moment('2017-08-24T14:14:15+00:00').calendar()}
+						</Detail>
+						<Detail>
+							<span className="lnr lnr-location" /> {location}
+						</Detail>
+						<Detail>
+							<span className="lnr lnr-users" />{' '}
+							{this.renderRegisteredUsers(registeredUsers)}
+						</Detail>
+						{details.map((d, i) =>
+							<Detail key={i}>
+								<Bold>{d.title}</Bold>: {d.content}
+							</Detail>
+						)}
+					</Details>
+					<Actions>
+						<div className="loader pink" />
+					</Actions>
+				</Card>
+			)
 		return (
 			<Card>
 				<Title>
@@ -88,11 +144,15 @@ export default class EventCard extends Component {
 							/>
 						: null}
 					{title}
+					{manager ? <Edit className="edit lnr lnr-pencil" /> : null}
 				</Title>
 				<Details>
+					<Detail pink={manager}>
+						<span className="lnr lnr-user" /> by {managingUser.username}
+					</Detail>
 					<Detail>
 						<span className="lnr lnr-clock" />
-						{moment('2017-08-24T14:14:15+00:00').calendar()}
+						{moment(time).calendar()}
 					</Detail>
 					<Detail>
 						<span className="lnr lnr-location" /> {location}

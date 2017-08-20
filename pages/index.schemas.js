@@ -3,8 +3,10 @@ import { gql } from 'react-apollo'
 export const QuerySchema = gql`
 	{
 		user {
-			events {
+			username
+			events: eventsManaged {
 				title
+				id
 				location
 				time
 				details {
@@ -13,6 +15,9 @@ export const QuerySchema = gql`
 				}
 				private
 				registeredUsers {
+					username
+				}
+				managingUser {
 					username
 				}
 			}
