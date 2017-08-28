@@ -11,6 +11,7 @@ import Error from '../components/Error'
 const WideButton = Button.extend`
 	width: 100%;
 	position: relative;
+	overflow: hidden;
 	${props =>
 		props.disabled && 'cursor: default; background: #ddd; border-color: #ddd;'};
 `
@@ -18,11 +19,16 @@ const WideButton = Button.extend`
 const Card = styled.div`
 	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 	background: white;
+	min-height: 60vh;
+	display: flex;
+	flex-direction: column;
 	width: 40vw;
+	overflow: hidden;
 	border: 1px #ddd solid;
 	border-radius: 4px;
 	@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-		width: 90vw;
+		width: 100vw;
+		height: 100vh;
 	}
 `
 
@@ -55,9 +61,13 @@ const Title = styled.h1`
 	padding-left: 24px;
 	padding-bottom: 0px;
 `
+const Err = styled.p`color: #ed174c;`
 
 const Wrapper = styled.div`
+	background: url('/static/login-background.svg');
 	height: 100vh;
+	background-repeat: no-repeat;
+	background-position: 40vw -150%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -65,10 +75,18 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
 	padding: 16px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 	padding-top: 0;
 `
 
-const Form = styled.form`text-align: center;`
+const Form = styled.form`
+	text-align: center;
+	transition: all .2s ease-out;
+	transform: translateX(0);
+`
 
 const Actions = styled.div`
 	padding: 16px;
@@ -78,17 +96,20 @@ const Actions = styled.div`
 
 const Input = styled.input`
 	display: block;
-	border: 1px #ddd solid;
+	border: none;
+	border-bottom: 2px #ddd solid;
 	outline: none;
-	background: #f8f8f8;
-	border-radius: 4px;
 	padding: 10px;
 	width: 95%;
 	margin: 16px 0;
+	transition: all .2s ease-out;
+	&:focus {
+		border-color: #ec1d4d;
+	}
 `
 
 class Login extends Component {
-	state = { username: '', password: '' }
+	state = { username: '', password: '', form: true }
 
 	async login(e) {
 		e.preventDefault()
@@ -115,9 +136,25 @@ class Login extends Component {
 
 		return (
 			<Wrapper>
+				<style jsx>
+					{`
+						h1.example-enter {
+							transform: translateX(100%);
+						}
+						h1.example-enter.example-enter-active {
+							transform: translateX(100%);
+							color: red;
+						}
+						h1 {
+							transition: all .2s ease-out;
+							transform: translateX(0);
+						}
+					`}
+				</style>
 				<Card>
 					<Content>
 						<Title>Login</Title>
+
 						<Form onSubmit={this.login.bind(this)}>
 							<Input
 								placeholder="IPA username..."
@@ -134,6 +171,10 @@ class Login extends Component {
 								onChange={({ target: { value } }) =>
 									this.setState({ password: value })}
 							/>
+							{error &&
+								<Err>
+									{error}
+								</Err>}
 							<input type="submit" style={{ display: 'none' }} />
 						</Form>
 					</Content>
@@ -149,7 +190,6 @@ class Login extends Component {
 						</WideButton>
 					</Actions>
 				</Card>
-				{error ? <Error message={error}> </Error> : null}
 			</Wrapper>
 		)
 	}

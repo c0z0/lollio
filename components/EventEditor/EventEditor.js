@@ -34,13 +34,16 @@ to {
 
 const Input = styled.input`
 	display: block;
-	border: 1px #ddd solid;
+	border: none;
+	border-bottom: 2px #ddd solid;
 	outline: none;
-	background: #f8f8f8;
-	border-radius: 4px;
 	padding: 10px;
 	width: 95%;
 	margin: 16px 0;
+	transition: all .2s ease-out;
+	&:focus {
+		border-color: #ec1d4d;
+	}
 `
 
 const Wrapper = styled.div`
@@ -65,7 +68,6 @@ const Wrapper = styled.div`
 	${props =>
 		props.page &&
 		`
-		margin: 64px 128px;
 		animation: none;
 		position: static;
 		box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);

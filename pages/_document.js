@@ -45,6 +45,9 @@ export default class MyDocument extends Document {
 			/*!
 		* https://github.com/YouCanBookMe/react-datetime
 		*/
+						.body {
+							margin: 0;
+						}
 
 		.rdt {
 			position: relative;
