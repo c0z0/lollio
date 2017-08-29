@@ -167,7 +167,7 @@ class EventEditor extends Component {
           details: [],
           managingUser: {
             __typename: 'User',
-            username: '',
+            email: '',
           },
           registeredUsers: [],
         },
@@ -298,10 +298,10 @@ const CreateEvent = gql`
       }
       private
       registeredUsers {
-        username
+        email
       }
       managingUser {
-        username
+        email
       }
     }
   }

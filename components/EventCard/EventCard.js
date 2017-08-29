@@ -88,9 +88,9 @@ export default class EventCard extends Component {
 
   renderRegisteredUsers(users) {
     if (users.length === 0) return 'No users registered'
-    if (users.length === 1) return users[0].username
-    if (users.length === 2) return `${users[0].username} and 1 other`
-    return `${users[0].username} and ${users.length - 1} others`
+    if (users.length === 1) return users[0].email
+    if (users.length === 2) return `${users[0].email} and 1 other`
+    return `${users[0].email} and ${users.length - 1} others`
   }
 
   render() {
@@ -152,7 +152,7 @@ export default class EventCard extends Component {
         </Title>
         <Details>
           <Detail pink={manager}>
-            <span className="lnr lnr-user" /> by {managingUser.username}
+            <span className="lnr lnr-user" /> by {managingUser.email}
           </Detail>
           <Detail>
             <span className="lnr lnr-clock" />

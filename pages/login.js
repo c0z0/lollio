@@ -8,6 +8,16 @@ import withData from '../apollo-utils/withData.js'
 import Button from '../components/Button'
 import Error from '../components/Error'
 
+const SigninSubscription = gql`
+  subscription loginSub($email: String!, $secret: String!) {
+    Signin(email: $email, secret: $secret) {
+      node {
+        token
+      }
+    }
+  }
+`
+
 function validateEmail(email) {
   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
@@ -18,7 +28,8 @@ const WideButton = Button.extend`
   overflow: hidden;
   padding: 12px 32px;
   ${props =>
-    props.disabled && 'cursor: default; background: #ddd; border-color: #ddd;'};
+    props.disabled &&
+    'cursor: default; background: #ddd; border-color: #ddd; pointer-events: none;'};
 `
 
 const Card = styled.div`
@@ -66,7 +77,7 @@ const Title = styled.h1`
   padding-left: 24px;
   padding-bottom: 0px;
 `
-const Err = styled.p`color: #ed174c;`
+const Secret = styled.span`color: #ed174c;`
 
 const Wrapper = styled.div`
   background: url('/static/login-background.svg');
@@ -105,6 +116,8 @@ const Input = styled.input`
   mergin-left: -8px;
 `
 
+const P = styled.p`color: #484848;`
+
 const InputWrapper = styled.div`
   display: flex;
   margin-bottom: 20px;
@@ -134,30 +147,40 @@ const Label = styled.label`
 `
 
 class Login extends Component {
-  state = { email: '', form: true }
+  state = {
+    email: '',
+    secret: '',
+  }
 
   async login(e) {
     e.preventDefault()
-    const { username, password } = this.state
+    const { email } = this.state
+    if (!validateEmail(email)) return false
     this.setState({ loading: true, error: false })
-    if (!username || !password) return false
-    const { data: { signinUser: { token } } } = await this.props.mutate({
+    const { data: { signinUser: { secret } } } = await this.props.mutate({
       variables: {
-        username,
-        password,
+        email,
       },
     })
-    if (!token)
-      return this.setState({
-        error: 'Invalid username or password.',
-        loading: false,
-      })
-    Cookie.set('session', token)
-    Router.replace('/')
+    this.props.data.subscribeToMore({
+      document: SigninSubscription,
+      variables: { email, secret },
+      updateQuery: (
+        prev,
+        { subscriptionData: { data: { Signin: { node: { token } } } } },
+      ) => {
+        Cookie.set('session', token)
+        Router.replace('/')
+      },
+    })
+    return this.setState({
+      secret,
+      loading: false,
+    })
   }
 
   render() {
-    const { email, error, loading, emailFocused } = this.state
+    const { email, secret, loading, emailFocused } = this.state
 
     return (
       <Wrapper>
@@ -173,26 +196,38 @@ class Login extends Component {
               Login <span className="started">to get started.</span>
             </Title>
 
-            <Form onSubmit={this.login.bind(this)}>
-              <InputWrapper focused={emailFocused}>
-                <span className="lnr lnr-envelope no-padding" />
-                <Input
-                  placeholder="Email..."
-                  type="email"
-                  autoFocus
-                  onFocus={() => this.setState({ emailFocused: true })}
-                  onBlur={() => this.setState({ emailFocused: false })}
-                  value={email}
-                  onChange={({ target: { value } }) =>
-                    this.setState({ email: value })}
-                />
-              </InputWrapper>
-              {error && <Err>{error}</Err>}
-              <input type="submit" style={{ display: 'none' }} />
-            </Form>
+            {secret ? (
+              <P>
+                We sent an email to <Secret>{email}</Secret>.<br />
+                <br /> Go to your inbox, verify that the security code matches{' '}
+                <Secret>{secret}</Secret> and follow the link.
+              </P>
+            ) : (
+              <Form onSubmit={this.login.bind(this)}>
+                <InputWrapper focused={emailFocused}>
+                  <span className="lnr lnr-envelope no-padding" />
+                  <Input
+                    placeholder="Email..."
+                    type="email"
+                    autoFocus
+                    onFocus={() => this.setState({ emailFocused: true })}
+                    onBlur={() => this.setState({ emailFocused: false })}
+                    value={email}
+                    onChange={({ target: { value } }) =>
+                      this.setState({ email: value })}
+                  />
+                </InputWrapper>
+
+                <input type="submit" style={{ display: 'none' }} />
+              </Form>
+            )}
           </Content>
           <Actions>
             <WideButton
+              style={{
+                opacity: !secret ? 1 : 0,
+                pointerEvents: !secret ? 'auto' : 'none',
+              }}
               onClick={this.login.bind(this)}
               disabled={!validateEmail(email)}
             >
@@ -209,11 +244,19 @@ class Login extends Component {
 }
 
 const SigninMutation = gql`
-  mutation login($username: String!, $password: String!) {
-    signinUser(username: $username, password: $password) {
-      token
+  mutation login($email: String!) {
+    signinUser(email: $email) {
+      secret
     }
   }
 `
 
-export default withData(graphql(SigninMutation)(Login))
+const EmptyQuery = gql`
+  {
+    allUsers {
+      id
+    }
+  }
+`
+
+export default withData(graphql(EmptyQuery)(graphql(SigninMutation)(Login)))
