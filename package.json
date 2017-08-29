@@ -1,34 +1,38 @@
 {
-	"name": "LolaPlanner",
-	"version": "1.0.0",
-	"main": "index.js",
-	"repository": "git@github.com:cserdean/LolaPlanner.git",
-	"author": "Cosmin Serdean <cosmin.serdean@lola.tech>",
-	"license": "MIT",
-	"scripts": {
-		"dev": "babel-node --presets=es2015,stage-2 index.js",
-		"start": "NODE_ENV=production babel-node --presets=es2015,stage-2 index.js",
-		"build": "next build"
-	},
-	"dependencies": {
-		"apollo-client": "^1.9.1",
-		"babel-cli": "^6.26.0",
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-stage-2": "^6.24.1",
-		"cookie": "^0.3.1",
-		"cookie-parser": "^1.4.3",
-		"express": "^4.15.4",
-		"isomorphic-fetch": "^2.2.1",
-		"js-cookie": "^2.1.4",
-		"lodash": "^4.17.4",
-		"moment": "^2.18.1",
-		"next": "^3.0.6",
-		"prop-types": "^15.5.10",
-		"react": "^15.6.1",
-		"react-addons-css-transition-group": "^15.6.0",
-		"react-apollo": "^1.4.14",
-		"react-datetime": "^2.9.0",
-		"react-dom": "^15.6.1",
-		"styled-components": "^2.1.2"
-	}
+  "name": "LolaPlanner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cserdean/LolaPlanner.git",
+  "author": "Cosmin Serdean <cosmin.serdean@lola.tech>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "babel-node --presets=es2015,stage-2 index.js",
+    "start": "NODE_ENV=production babel-node --presets=es2015,stage-2 index.js",
+    "build": "next build",
+    "storybook": "start-storybook -p 9001 -c stories"
+  },
+  "dependencies": {
+    "apollo-client": "^1.9.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "cookie": "^0.3.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.1.4",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "next": "^3.0.6",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-apollo": "^1.4.14",
+    "react-datetime": "^2.9.0",
+    "react-dom": "^15.6.1",
+    "styled-components": "^2.1.2"
+  },
+  "devDependencies": {
+    "@storybook/react": "^3.2.8"
+  }
 }

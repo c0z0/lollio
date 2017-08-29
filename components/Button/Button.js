@@ -10,12 +10,19 @@ const Button = styled.button`
   padding: 10px;
   cursor: pointer;
   border-radius: 6px;
-  transition: all .2s;
+  padding: 12px 32px;
+  margin: 8px;
+  transition: all 0.2s;
   // &:hover {
   // 	transform: translate(-2px, -2px);
   // 	box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, .1);
   // }
-  ${props => props.secondary && `color: #ed174c; background: white;`};
+  ${props =>
+    props.secondary &&
+    `color: #484848; border-color: #ccc; background: white; &: hover{
+      color: #ed174c;
+      border-color: #ed174c;
+    }`};
   ${props =>
     props.disabled && 'cursor: default; background: #ddd; border-color: #ddd;'};
 `
