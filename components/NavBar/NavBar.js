@@ -18,7 +18,7 @@ const Title = styled.h3`
   padding-bottom: 0px;
 `
 
-const Img = styled.img`height: 96px;`
+const Img = styled.img`height: 96px; opacity: 0;`
 
 const Menu = styled.div``
 
@@ -34,7 +34,7 @@ const MenuItem = styled.a`
 export default function NavBar({ activePage }) {
   return (
     <Wrapper>
-      <Img src="https://rtfm.lolacloud.com/download/attachments/3055373/lola-tech-standard.png?api=v2" />
+      <Img src="https://rtfm.lolacloud.com/download/attachments/3055373/lola-tech-standard.png?api=v2"/>
       <Menu>
         <Link href="/">
           <MenuItem>My events</MenuItem>

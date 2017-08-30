@@ -309,7 +309,7 @@ export default class MyDocument extends Document {
               }
             `}
           </style>
-          <title>Lola Planner</title>
+          <title>Lolly Planner</title>
           {styleTags}
         </Head>
 

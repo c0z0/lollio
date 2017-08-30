@@ -15,7 +15,7 @@ if (!process.browser) {
 
 function create(initialState, { getToken }) {
   const networkInterface = createNetworkInterface({
-    uri: 'http://localhost:8080/graphql',
+    uri: process.browser ? '/graphql' : 'http://localhost:8080/graphql',
   })
 
   networkInterface.use([
@@ -40,7 +40,7 @@ function create(initialState, { getToken }) {
     networkInterface: process.browser
       ? addGraphQLSubscriptions(
           networkInterface,
-          new SubscriptionClient(`ws://localhost:8080/subscriptions`, {
+          new SubscriptionClient(process.browser ? 'ws://138.197.180.106/subscriptions' : `ws://localhost:8080/subscriptions`, {
             reconnect: true,
           }),
         )
