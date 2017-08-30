@@ -36,7 +36,7 @@ var _styledComponents = require('styled-components');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _jsxFileName = '/Users/cosmin.serdean/Documents/Projects/LolaPlanner/pages/_document.js?entry';
+var _jsxFileName = '/Users/cosminserdean/Documents/Projects/LolaPlanner/pages/_document.js?entry';
 
 
 var MyDocument = function (_Document) {
