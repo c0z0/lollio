@@ -5,6 +5,8 @@ import DateTime from 'react-datetime'
 import moment from 'moment'
 import { gql, graphql } from 'react-apollo'
 
+import DatePicker from '../DatePicker'
+
 import { QuerySchema } from '../../pages/index.schemas.js'
 
 import Checkbox from '../Checkbox'
@@ -51,6 +53,13 @@ const InputWrapper = styled.div`
   border-radius: 4px;
   align-items: center;
   padding-left: 12px;
+
+  & span {
+    color: #aaa;
+    transition: all 0.2s ease-out;
+  }
+
+  ${props => props.active && `& span { color: #ed174c; }`};
 `
 
 const Wrapper = styled.div`
@@ -59,7 +68,6 @@ const Wrapper = styled.div`
   left: 128px;
   right: 128px;
   background: white;
-  border: 1px #ddd solid;
   z-index: 30;
   border-radius: 4px;
   animation: placeholder 0.2s ease-out;
@@ -91,7 +99,10 @@ const Actions = styled.div`
   text-align: right;
 `
 
-const Inner = styled.div`position: relative;`
+const Inner = styled.div`
+  position: relative;
+  display: flex;
+`
 
 const Blackout = styled.div`
   position: fixed;
@@ -105,9 +116,29 @@ const Blackout = styled.div`
   animation-name: ${fadeIn};
 `
 
-const Content = styled.div`padding: 32px;`
+const Content = styled.div`
+  flex: 1;
+  border: 1px #ddd solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+`
 
-const Title = styled.h1`color: #ed174c;`
+const Form = styled.form`
+  padding: 32px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+
+const Title = styled.h1`
+  color: #white;
+  padding: 32px;
+  padding-bottom: 0;
+`
 
 const Close = styled.span`
   position: absolute;
@@ -132,6 +163,14 @@ const CheckBoxWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 20px 0;
+`
+
+const Date = styled.div`
+  background: #ed174c;
+  color: white !important;
+  border-top-left-radius: 4px;
+  padding-bottom: 28px;
+  border-bottom-left-radius: 4px;
 `
 
 class EventEditor extends Component {
@@ -181,24 +220,54 @@ class EventEditor extends Component {
 
   render() {
     const { page, close } = this.props
-    const { private: isPrivate, time, title, location, loading } = this.state
+    const {
+      private: isPrivate,
+      time,
+      title,
+      location,
+      loading,
+      titleFocused,
+      locationFocused,
+    } = this.state
     return (
       <div>
-        {!page ? <Blackout /> : null}
+        {!page ? <Blackout onClick={() => close()} /> : null}
         <Wrapper page={page}>
           <Inner>
-            <Close
-              className="lnr lnr-cross"
-              onClick={() => {
-                Router.replace('/')
-                if (!page) close()
-              }}
-            />
+            <Date>
+              <Title>Create an event</Title>
+              <DatePicker onChange={time => this.setState({ time })} />
+            </Date>
             <Content>
-              <Title>
-                {!isPrivate ? 'Create an event' : 'Create a private event'}
-              </Title>
-              <form>
+              <Form>
+                <Label htmlFor="title">Title</Label>
+                <InputWrapper active={titleFocused}>
+                  <span className="lnr no-padding lnr-text-format" />
+                  <Input
+                    onFocus={() => this.setState({ titleFocused: true })}
+                    onBlur={() => this.setState({ titleFocused: false })}
+                    type="text"
+                    placeholder="Event title..."
+                    id="title"
+                    value={title}
+                    onChange={({ target: { value } }) =>
+                      this.setState({ title: value })}
+                  />
+                </InputWrapper>
+                <Label htmlFor="location">Location</Label>
+                <InputWrapper active={locationFocused}>
+                  <span className="lnr no-padding lnr-location" />
+                  <Input
+                    onFocus={() => this.setState({ locationFocused: true })}
+                    onBlur={() => this.setState({ locationFocused: false })}
+                    type="text"
+                    placeholder="Event location..."
+                    id="location"
+                    value={location}
+                    onChange={({ target: { value } }) =>
+                      this.setState({ location: value })}
+                  />
+                </InputWrapper>
                 <CheckBoxWrapper>
                   <Checkbox
                     checked={isPrivate}
@@ -215,59 +284,25 @@ class EventEditor extends Component {
                     </LabelDetail>
                   </Label>
                 </CheckBoxWrapper>
-                <Label htmlFor="title">Title</Label>
-                <InputWrapper>
-                  <span className="lnr no-padding lnr-text-format" />
-                  <Input
-                    type="text"
-                    placeholder="Event title..."
-                    id="title"
-                    value={title}
-                    onChange={({ target: { value } }) =>
-                      this.setState({ title: value })}
-                  />
-                </InputWrapper>
-                <Label htmlFor="location">Location</Label>
-                <InputWrapper>
-                  <span className="lnr no-padding lnr-location" />
-                  <Input
-                    type="text"
-                    placeholder="Event location..."
-                    id="location"
-                    value={location}
-                    onChange={({ target: { value } }) =>
-                      this.setState({ location: value })}
-                  />
-                </InputWrapper>
-                <Label htmlFor="location">
-                  <span className="lnr lnr-clock" />Date and time
-                </Label>
-                <DateTime
-                  value={moment(time)}
-                  onChange={v => {
-                    if (typeof v === 'string') return false
-                    this.setState({ time: v.toISOString() })
+              </Form>
+              <Actions>
+                <Button
+                  secondary
+                  onClick={() => {
+                    Router.replace('/')
+                    if (!page) close()
                   }}
+                >
+                  Cancel
+                </Button>
+                <Button.Loading
+                  loading={loading}
+                  text={'Create'}
+                  disabled={!title || !time || !location}
+                  onClick={this.create.bind(this)}
                 />
-              </form>
+              </Actions>
             </Content>
-            <Actions>
-              <Button
-                secondary
-                onClick={() => {
-                  Router.replace('/')
-                  if (!page) close()
-                }}
-              >
-                Cancel
-              </Button>
-              <Button.Loading
-                loading={loading}
-                text={'Create'}
-                disabled={!title || !time || !location}
-                onClick={this.create.bind(this)}
-              />
-            </Actions>
           </Inner>
         </Wrapper>
       </div>

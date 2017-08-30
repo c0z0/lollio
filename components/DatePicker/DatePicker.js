@@ -1,16 +1,15 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
 import Button from '../Button'
 
 const Wrapper = styled.div`
-  border: 1px solid #ddd;
   border-radius: 4px;
   display: inline-block;
   color: #484848;
-  margin: 16px;
-  transition: all .2s ease-out;
+  margin: 4px;
+  transition: all 0.2s ease-out;
 `
 
 const Actions = styled.div`
@@ -57,83 +56,36 @@ const Title = styled.h2`color: #ed174c;`
 
 const Day = styled.td`
   padding: 16px;
-  border-radius: 2px;
+  border-radius: 100%;
   text-align: center;
   cursor: pointer;
-  transition: all .2s ease-out;
+  transition: all 0.1s ease-out;
+  color: white;
+  border: 1px solid #ed174c;
 
   &:hover {
-    color: white;
-    background: #ed174c;
+    color: #ed174c;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0);
   }
-  ${props => props.active && `color: #ed174c; border: 1px solid #ed174c;`};
+
+  ${props =>
+    props.selected &&
+    `color: #ed174c;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0);`} ${props =>
+      props.active && `border: 1px solid white;`};
 `
 
-const DayOfWeek = styled.th`color: #aaa;`
+const DayOfWeek = styled.th`
+  color: white;
+  opacity: 0.5;
+`
 
 export default class DatePicker extends Component {
-  state = {monthOffset: 0, setDate: '', minute: 0, hour: 9}
+  state = { monthOffset: 0, setDate: '', minute: 0, hour: 9 }
   render() {
-    const {monthOffset, setDate, minute, hour} = this.state
-
-    if (setDate)
-      return (
-        <Wrapper>
-          <Bar>
-            <ChangeMonth onClick={() => this.setState({setDate: ''})}>
-              <span className="lnr lnr-chevron-left" />
-            </ChangeMonth>
-            <Month>
-              {moment(setDate).format('Do of MMMM YYYY')}
-            </Month>
-            <ChangeMonth hid>
-              <span className="lnr lnr-chevron-left" />
-            </ChangeMonth>
-          </Bar>
-          <Content>
-            <Time>
-              <ChangeMonth
-                pink
-                onClick={() =>
-                  this.setState({hour: hour !== 23 ? hour + 1 : 0})}>
-                <span className="lnr lnr-chevron-up" />
-              </ChangeMonth>
-              <Title>{`${hour < 10 ? '0' : ''}${hour}`}</Title>
-              <ChangeMonth
-                pink
-                onClick={() =>
-                  this.setState({hour: hour !== 0 ? hour - 1 : 23})}>
-                <span className="lnr lnr-chevron-down" />
-              </ChangeMonth>
-            </Time>
-            <h3>:</h3>
-            <Time>
-              <ChangeMonth
-                pink
-                onClick={() =>
-                  this.setState({minute: minute !== 59 ? minute + 1 : 0})}>
-                <span className="lnr lnr-chevron-up" />
-              </ChangeMonth>
-              <Title>{`${minute < 10 ? '0' : ''}${minute}`}</Title>
-              <ChangeMonth
-                pink
-                onClick={() =>
-                  this.setState({minute: minute !== 0 ? minute - 1 : 59})}>
-                <span className="lnr lnr-chevron-down" />
-              </ChangeMonth>
-            </Time>
-          </Content>
-          <Actions>
-            <Button
-              onClick={() =>
-                this.props.onChange(
-                  moment(setDate).hour(hour).minute(minute).toISOString()
-                )}>
-              Set
-            </Button>
-          </Actions>
-        </Wrapper>
-      )
+    const { monthOffset, setDate, minute, hour } = this.state
     const date = moment()
       .date(1)
       .hour(0)
@@ -145,45 +97,69 @@ export default class DatePicker extends Component {
     const year = date.year() !== moment().year() && date.year()
 
     const firstWeekOffset = Array(
-      date.date(1).day() - 1 < 0 ? 6 : date.date(1).day() - 1
+      date.date(1).day() - 1 < 0 ? 6 : date.date(1).day() - 1,
     )
       .fill(1)
       .map((_, i) => <td key={i} />)
 
     const days = firstWeekOffset.concat(
-      Array(date.daysInMonth()).fill().map((_, d) =>
-        <Day
-          key={firstWeekOffset.length + d + 1}
-          onClick={() =>
-            this.setState({
-              setDate: moment()
+      Array(date.daysInMonth())
+        .fill()
+        .map((_, d) => (
+          <Day
+            key={firstWeekOffset.length + d + 1}
+            onClick={() => {
+              this.setState({
+                setDate: moment()
+                  .add(monthOffset, 'M')
+                  .date(d + 1)
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .millisecond(0)
+                  .toISOString(),
+              })
+              this.props.onChange(
+                moment()
+                  .add(monthOffset, 'M')
+                  .date(d + 1)
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .millisecond(0)
+                  .toISOString(),
+              )
+            }}
+            active={
+              moment()
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .millisecond(0)
+                .toISOString() ===
+              moment()
                 .add(monthOffset, 'M')
                 .date(d + 1)
                 .hour(0)
                 .minute(0)
                 .second(0)
                 .millisecond(0)
-                .toISOString(),
-            })}
-          active={
-            moment()
-              .hour(0)
-              .minute(0)
-              .second(0)
-              .millisecond(0)
-              .toISOString() ===
-            moment()
-              .add(monthOffset, 'M')
-              .date(d + 1)
-              .hour(0)
-              .minute(0)
-              .second(0)
-              .millisecond(0)
-              .toISOString()
-          }>
-          {d + 1}
-        </Day>
-      )
+                .toISOString()
+            }
+            selected={
+              moment()
+                .add(monthOffset, 'M')
+                .date(d + 1)
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .millisecond(0)
+                .toISOString() === this.state.setDate
+            }
+          >
+            {d + 1}
+          </Day>
+        )),
     )
 
     const monthTitle = date.format('MMMM')
@@ -200,7 +176,8 @@ export default class DatePicker extends Component {
       <Wrapper>
         <Bar>
           <ChangeMonth
-            onClick={() => this.setState({monthOffset: monthOffset - 1})}>
+            onClick={() => this.setState({ monthOffset: monthOffset - 1 })}
+          >
             <span className="lnr lnr-chevron-left" />
           </ChangeMonth>
           <Month>
@@ -208,27 +185,18 @@ export default class DatePicker extends Component {
             {year ? `, ${year}` : null}
           </Month>
           <ChangeMonth
-            onClick={() => this.setState({monthOffset: monthOffset + 1})}>
+            onClick={() => this.setState({ monthOffset: monthOffset + 1 })}
+          >
             <span className="lnr lnr-chevron-right" />
           </ChangeMonth>
         </Bar>
         <Table>
           <thead>
             <tr>
-              {daysOfWeek.map((d, i) =>
-                <DayOfWeek key={i}>
-                  {d}
-                </DayOfWeek>
-              )}
+              {daysOfWeek.map((d, i) => <DayOfWeek key={i}>{d}</DayOfWeek>)}
             </tr>
           </thead>
-          <tbody>
-            {weeks.map((w, i) =>
-              <tr key={i}>
-                {w}
-              </tr>
-            )}
-          </tbody>
+          <tbody>{weeks.map((w, i) => <tr key={i}>{w}</tr>)}</tbody>
         </Table>
       </Wrapper>
     )
