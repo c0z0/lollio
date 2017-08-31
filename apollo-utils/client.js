@@ -45,7 +45,7 @@ function create(initialState, { getToken }) {
           networkInterface,
           new SubscriptionClient(
             process.browser && process.env.NODE_ENV === 'production'
-              ? 'wss://lolli.cserdean.me/subscriptions'
+              ? `wss://${process.env.HOST}/subscriptions`
               : `ws://localhost:8080/subscriptions`,
             {
               reconnect: true,
