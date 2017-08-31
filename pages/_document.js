@@ -19,10 +19,6 @@ export default class MyDocument extends Document {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
 
           <link
-            href="https://fonts.googleapis.com/css?family=Lato"
-            rel="stylesheet"
-          />
-          <link
             rel="stylesheet"
             href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"
           />
@@ -33,7 +29,10 @@ export default class MyDocument extends Document {
           <style>
             {`
 
-              @import url('https://fonts.googleapis.com/css?family=Lato');
+              @font-face {
+                font-family: Lato;
+                src: url('/static/lato.ttf') format('truetype');
+              }
               body {
                 font-family: Lato, sans-serif !important;
                 background: #f8f8f8;
