@@ -26,13 +26,12 @@ export default class MyDocument extends Document {
             href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
             rel="stylesheet"
           />
+          <link
+            href="//fonts.googleapis.com/css?family=Lato"
+            rel="stylesheet"
+          />
           <style>
             {`
-
-              @font-face {
-                font-family: Lato;
-                src: url('/static/lato.ttf') format('truetype');
-              }
               body {
                 font-family: Lato, sans-serif !important;
                 background: #f8f8f8;
