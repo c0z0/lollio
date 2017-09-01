@@ -51,10 +51,10 @@ const Card = styled.div`
 `
 
 const Lolli = styled.img`
-	height: 120px;
+	height: 32px;
 	position: absolute;
 	display: inline-block;
-	bottom: -32px;
+	bottom: 32px;
 	left: 32px;
 	filter: grayscale(100%);
 	opacity: 0.2;
@@ -68,10 +68,8 @@ const Lolli = styled.img`
 		transition: 1s ease-out;
 	`} &:hover {
 		transition: all 0.2s ease-out;
-
 		filter: grayscale(0%);
 		opacity: 1;
-		bottom: -10px;
 	}
 `
 
@@ -222,8 +220,8 @@ class Login extends Component {
 					}
 				`}</style>
 				<Card>
-					<Lolli src="/static/logo-vertical.svg" secret={secret} />
 					<Content>
+						<Lolli src="/static/logo.svg" secret={secret} />
 						<Title>
 							Login <span className="started">to get started.</span>
 						</Title>

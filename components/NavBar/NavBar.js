@@ -10,6 +10,7 @@ const Wrapper = styled.div`
 	border-bottom: 1px #ddd solid;
 	background: white;
 	align-items: center;
+	padding: 16px 32px;
 	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 `
 const Title = styled.h1`
@@ -20,13 +21,8 @@ const Title = styled.h1`
 `
 
 const Img = styled.img`
-	height: 100px;
-	margin-left: -60px;
-	margin-right: -20px;
+	height: 48px;
 	transition: all 0.2s ease-out;
-	&:hover {
-		margin-left: -5px;
-	}
 `
 
 const Menu = styled.div``
@@ -44,7 +40,7 @@ export default function NavBar({ activePage }) {
 	return (
 		<Wrapper>
 			<Link to="/">
-				<Img src="/static/logo-horizontal.svg" />
+				<Img src="/static/logo.svg" />
 			</Link>
 			<Menu>
 				<Link href="/">
