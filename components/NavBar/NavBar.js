@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 	border-bottom: 1px #ddd solid;
 	background: white;
 	align-items: center;
-	padding: 16px 32px;
+	padding: 24px 32px;
 	box-shadow: 2px 2px 30px -8px rgba(0, 0, 0, 0.2);
 `
 const Title = styled.h1`
@@ -21,7 +21,7 @@ const Title = styled.h1`
 `
 
 const Img = styled.img`
-	height: 48px;
+	height: 32px;
 	transition: all 0.2s ease-out;
 `
 
