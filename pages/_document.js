@@ -2,36 +2,36 @@ import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
-  render() {
-    const sheet = new ServerStyleSheet()
-    const main = sheet.collectStyles(<Main />)
-    const styleTags = sheet.getStyleElement()
+	render() {
+		const sheet = new ServerStyleSheet()
+		const main = sheet.collectStyles(<Main />)
+		const styleTags = sheet.getStyleElement()
 
-    return (
-      <html>
-        <Head>
-          <link
-            rel="shortcut icon"
-            href="/static/favicon.ico"
-            type="image/x-icon"
-          />
-          <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+		return (
+			<html>
+				<Head>
+					<link
+						rel="shortcut icon"
+						href="/static/favicon.ico"
+						type="image/x-icon"
+					/>
+					<link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+					<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-          <link
-            rel="stylesheet"
-            href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"
-          />
-          <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
-            rel="stylesheet"
-          />
-          <link
-            href="//fonts.googleapis.com/css?family=Lato"
-            rel="stylesheet"
-          />
-          <style>
-            {`
+					<link
+						rel="stylesheet"
+						href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"
+					/>
+					<link
+						href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
+						rel="stylesheet"
+					/>
+					<link
+						href="//fonts.googleapis.com/css?family=Lato"
+						rel="stylesheet"
+					/>
+					<style>
+						{`
               body {
                 font-family: Lato, sans-serif !important;
                 background: #f8f8f8;
@@ -314,17 +314,17 @@ export default class MyDocument extends Document {
                 margin-top: 37px;
               }
             `}
-          </style>
-          <title>Lolly Planner</title>
-          {styleTags}
-        </Head>
+					</style>
+					<title>Lollio</title>
+					{styleTags}
+				</Head>
 
-        <body>
-          <div className="root">{main}</div>
+				<body>
+					<div className="root">{main}</div>
 
-          <NextScript />
-        </body>
-      </html>
-    )
-  }
+					<NextScript />
+				</body>
+			</html>
+		)
+	}
 }

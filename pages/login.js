@@ -119,7 +119,9 @@ const Title = styled.h1`
   padding-left: 24px;
   padding-bottom: 0px;
 `
-const Secret = styled.span`color: #ed174c;`
+const Secret = styled.span`
+  color: #ed174c;
+`
 
 const Wrapper = styled.div`
   background: url('/static/login-background.svg');

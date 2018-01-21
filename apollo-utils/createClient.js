@@ -2,7 +2,7 @@ import { ApolloClient, createNetworkInterface } from 'react-apollo'
 
 let client = new ApolloClient({
 	networkInterface: createNetworkInterface({
-		uri: 'http://localhost:8080/graphql' // Server URL (must be absolute)
+          uri: 'https://api.lollio.tech/graphql' // Server URL (must be absolute)
 	})
 })
 
